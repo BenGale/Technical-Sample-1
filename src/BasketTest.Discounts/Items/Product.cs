@@ -1,4 +1,4 @@
-﻿namespace BasketTest.Discounts
+﻿namespace BasketTest.Discounts.Items
 {
     public class Product
     {

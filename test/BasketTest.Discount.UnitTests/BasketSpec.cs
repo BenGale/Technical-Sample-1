@@ -53,5 +53,7 @@ namespace BasketTest.Discount.UnitTests
 
             result.Should().Be(65.15m);
         }
+
+        
     }
 }
