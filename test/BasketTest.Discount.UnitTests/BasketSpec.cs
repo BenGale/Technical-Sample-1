@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using BasketTest.Discounts;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -28,7 +24,7 @@ namespace BasketTest.Discount.UnitTests
             _sut.AddProduct(testProduct);
 
             _sut.Products.Should().HaveCount(1);
-            _sut.Products.Single().Should.Be(testProduct);
+            _sut.Products.Single().Should().Be(testProduct);
         }
     }
 }
