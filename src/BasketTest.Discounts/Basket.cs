@@ -8,10 +8,12 @@ namespace BasketTest.Discounts
     public class Basket
     {
         public List<Product> Products { get; }
+        public List<GiftVoucher> Vouchers { get; }
 
         public Basket()
         {
             Products = new List<Product>();
+            Vouchers = new List<GiftVoucher>();
         }
 
         public void AddProduct(Product product)
@@ -24,9 +26,9 @@ namespace BasketTest.Discounts
             return Products.Sum(product => product.Value);
         }
 
-        public void AddVoucher(GiftVoucher testVoucher)
+        public void AddVoucher(GiftVoucher voucher)
         {
-            throw new NotImplementedException();
+            Vouchers.Add(voucher);
         }
     }
 }

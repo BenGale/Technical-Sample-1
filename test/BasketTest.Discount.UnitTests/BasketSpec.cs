@@ -62,8 +62,8 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.AddVoucher(testVoucher);
 
-            _sut.Products.Should().HaveCount(1);
-            _sut.Products.Single().Should().Be(testVoucher);
+            _sut.Vouchers.Should().HaveCount(1);
+            _sut.Vouchers.Single().Should().Be(testVoucher);
         }
     }
 }
