@@ -55,6 +55,15 @@ namespace BasketTest.Discount.UnitTests
             result.Should().Be(65.15m);
         }
 
-        
+        [Test]
+        public void Basket_AcceptsGiftVoucher()
+        {
+            var testVoucher = new GiftVoucher(-5m);
+
+            _sut.AddVoucher(testVoucher);
+
+            _sut.Products.Should().HaveCount(1);
+            _sut.Products.Single().Should().Be(testVoucher);
+        }
     }
 }

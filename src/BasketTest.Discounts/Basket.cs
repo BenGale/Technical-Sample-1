@@ -23,5 +23,10 @@ namespace BasketTest.Discounts
         {
             return Products.Sum(product => product.Value);
         }
+
+        public void AddVoucher(GiftVoucher testVoucher)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
