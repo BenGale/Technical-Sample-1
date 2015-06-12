@@ -145,5 +145,36 @@ namespace BasketTest.Discount.UnitTests
             _sut.Vouchers.Should().NotContain(testVoucherA);
             _sut.Vouchers.Should().Contain(testVoucherB);
         }
+
+        [Test]
+        public void Basket_CaluclatesProductsTotal_AfterRemoval()
+        {
+            var testProductA = new Product("Hat", 10.50m);
+            var testProductB = new Product("Jumper", 54.65m);
+
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
+            _sut.RemoveProduct(testProductA);
+            decimal result = _sut.Total();
+
+            result.Should().Be(54.65m);
+        }
+
+        [Test]
+        public void Basket_CaluclatesTotalWithVouchers_AfterRemoval()
+        {
+            var testProductA = new Product("Hat", 10.50m);
+            var testProductB = new Product("Jumper", 54.65m);
+            var testVoucherA = new GiftVoucher(-5m);
+            var testVoucherB = new GiftVoucher(-10m);
+
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
+            _sut.RemoveVoucher(testVoucherA);
+
+            _sut.Total().Should().Be(55.15m);
+        }
     }
 }
