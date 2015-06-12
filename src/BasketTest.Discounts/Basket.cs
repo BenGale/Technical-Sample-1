@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BasketTest.Discounts
 {
@@ -19,7 +20,7 @@ namespace BasketTest.Discounts
 
         public decimal Total()
         {
-            throw new NotImplementedException();
+            return Products.Sum(product => product.Value);
         }
     }
 }

@@ -47,6 +47,8 @@ namespace BasketTest.Discount.UnitTests
             var testProductA = new Product("Hat", 10.50m);
             var testProductB = new Product("Jumper", 54.65m);
 
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
             decimal result =_sut.Total();
 
             result.Should().Be(65.15m);
