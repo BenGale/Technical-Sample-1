@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using BasketTest.Discounts;
 using BasketTest.Discounts.Items;
+using BasketTest.Discounts.VoucherValidation;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 
 namespace BasketTest.Discount.UnitTests
@@ -14,7 +17,11 @@ namespace BasketTest.Discount.UnitTests
         [SetUp]
         public void Setup()
         {
-            _sut = new Basket();
+            var validatorMock = new Mock<IVoucherValidator>();
+            validatorMock.Setup(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                .Returns(new List<InvalidVoucher>());
+            _sut = new Basket(validatorMock.Object);
         }
 
         [Test]
@@ -181,34 +188,6 @@ namespace BasketTest.Discount.UnitTests
             _sut.RemoveVoucher(testVoucherA);
 
             _sut.Total().Should().Be(55.15m);
-        }
-
-        [Test]
-        public void Basket_CalulatesWithoutVoucherForTooLargeDiscount()
-        {
-            var testProduct = new Product("Hat", 10.50m);
-            var testVoucher = new GiftVoucher(15m);
-
-            _sut.AddProduct(testProduct);
-            _sut.AddVoucher(testVoucher);
-
-            _sut.Total().Should().Be(10.50m);
-        }
-
-        [Test]
-        public void Basket_CreatesInvalidVoucher_ForTooLargeDiscount()
-        {
-            var testProduct = new Product("Hat", 25m);
-            var testVoucher = new GiftVoucher(30m);
-
-            _sut.AddProduct(testProduct);
-            _sut.AddVoucher(testVoucher);
-
-            _sut.InvalidVouchers.Should().HaveCount(1);
-            var invalidVoucher = _sut.InvalidVouchers.Single();
-            invalidVoucher.Voucher.Should().Be(testVoucher);
-            invalidVoucher.Reason.Should().Be(
-                "You have not reached the spend threshold for this voucher.");
         }
     }
 }

@@ -1,0 +1,51 @@
+﻿using System.Linq;
+using BasketTest.Discounts;
+using BasketTest.Discounts.Items;
+using BasketTest.Discounts.VoucherValidation;
+using FluentAssertions;
+using NUnit.Framework;
+
+namespace BasketTest.Discount.ComponentTests
+{
+    [TestFixture]
+    public class BasketSpec
+    {
+        private GiftVoucherValueValidator _validator;
+        private Basket _basket;
+
+        [SetUp]
+        public void Setup()
+        {
+            _validator = new GiftVoucherValueValidator();
+            _basket = new Basket(_validator);
+        }
+
+        [Test]
+        public void Basket_CalulatesWithoutVoucherForTooLargeDiscount()
+        {
+            var testProduct = new Product("Hat", 10.50m);
+            var testVoucher = new GiftVoucher(15m);
+
+            _basket.AddProduct(testProduct);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.Total().Should().Be(10.50m);
+        }
+
+        [Test]
+        public void Basket_CreatesInvalidVoucher_ForTooLargeDiscount()
+        {
+            var testProduct = new Product("Hat", 25m);
+            var testVoucher = new GiftVoucher(30m);
+
+            _basket.AddProduct(testProduct);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.InvalidVouchers.Should().HaveCount(1);
+            var invalidVoucher = _basket.InvalidVouchers.Single();
+            invalidVoucher.Voucher.Should().Be(testVoucher);
+            invalidVoucher.Reason.Should().Be(
+                "You have not reached the spend threshold for this voucher.");
+        }
+    }
+}

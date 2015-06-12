@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using BasketTest.Discounts.Items;
+using BasketTest.Discounts.VoucherValidation;
 
 namespace BasketTest.Discounts
 {
     public class Basket
     {
+        private readonly IVoucherValidator _voucherValidator;
         public List<Product> Products { get; }
         public List<GiftVoucher> Vouchers { get; }
         public List<string> StatusMessages { get; set; }
         public List<InvalidVoucher> InvalidVouchers { get; }
 
-        public Basket()
+        public Basket(IVoucherValidator voucherValidator)
         {
+            _voucherValidator = voucherValidator;
+
             Products = new List<Product>();
             Vouchers = new List<GiftVoucher>();
             InvalidVouchers = new List<InvalidVoucher>();
@@ -30,14 +34,9 @@ namespace BasketTest.Discounts
 
         public void AddVoucher(GiftVoucher voucher)
         {
-            if (voucher.Value > Total())
-            {
-                InvalidVouchers.Add(new InvalidVoucher(voucher,
-                    "You have not reached the spend threshold for this voucher."));
-                return;
-            }
-
             Vouchers.Add(voucher);
+            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, Vouchers));
+            RemoveInvalidVouchers();
         }
 
         public void RemoveVoucher(GiftVoucher voucher)
@@ -51,6 +50,11 @@ namespace BasketTest.Discounts
             var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
 
             return productTotal - voucherTotal;
+        }
+
+        private void RemoveInvalidVouchers()
+        {
+            Vouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
         }
     }
 }
