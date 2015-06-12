@@ -22,7 +22,7 @@ namespace BasketTest.Discounts
         }
         public void RemoveProduct(Product product)
         {
-            throw new NotImplementedException();
+            Products.Remove(product);
         }
 
         public void AddVoucher(GiftVoucher voucher)
@@ -30,9 +30,9 @@ namespace BasketTest.Discounts
             Vouchers.Add(voucher);
         }
 
-        public void RemoveVoucher(GiftVoucher testVoucherA)
+        public void RemoveVoucher(GiftVoucher voucher)
         {
-            throw new NotImplementedException();
+            Vouchers.Remove(voucher);
         }
 
         public decimal Total()
