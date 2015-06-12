@@ -76,8 +76,8 @@ namespace BasketTest.Discount.UnitTests
             _sut.AddVoucher(testVoucherB);
 
             _sut.Vouchers.Should().HaveCount(2);
-            _sut.Vouchers.Single().Should().Be(testVoucherA);
-            _sut.Vouchers.Single().Should().Be(testVoucherB);
+            _sut.Vouchers.Should().Contain(testVoucherA);
+            _sut.Vouchers.Should().Contain(testVoucherB);
         }
 
         [Test]

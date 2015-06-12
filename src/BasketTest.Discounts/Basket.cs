@@ -23,7 +23,10 @@ namespace BasketTest.Discounts
 
         public decimal Total()
         {
-            return Products.Sum(product => product.Value);
+            var productTotal = Products.Sum(product => product.Value);
+            var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
+
+            return productTotal + voucherTotal;
         }
 
         public void AddVoucher(GiftVoucher voucher)
