@@ -28,7 +28,11 @@ namespace BasketTest.Discounts
 
         public void AddVoucher(GiftVoucher voucher)
         {
-            Vouchers.Add(voucher);
+            // TODO: This is not going to be good enough, add tests for other cases.
+            if (Total() + voucher.Value > 0)
+            {
+                Vouchers.Add(voucher);
+            }
         }
 
         public void RemoveVoucher(GiftVoucher voucher)

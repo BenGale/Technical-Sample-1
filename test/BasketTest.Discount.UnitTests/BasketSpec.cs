@@ -58,8 +58,10 @@ namespace BasketTest.Discount.UnitTests
         [Test]
         public void Basket_AcceptsGiftVoucher()
         {
+            var testProduct = new Product("Hat", 10m);
             var testVoucher = new GiftVoucher(-5m);
 
+            _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucher);
 
             _sut.Vouchers.Should().HaveCount(1);
@@ -69,9 +71,11 @@ namespace BasketTest.Discount.UnitTests
         [Test]
         public void Basket_AcceptsMultipleGiftVouchers()
         {
+            var testProduct = new Product("Hat", 30m);
             var testVoucherA = new GiftVoucher(-5m);
             var testVoucherB = new GiftVoucher(-15m);
 
+            _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucherA);
             _sut.AddVoucher(testVoucherB);
 
@@ -131,9 +135,11 @@ namespace BasketTest.Discount.UnitTests
         [Test]
         public void Basket_AcceptsVoucherRemoval()
         {
+            var testProduct = new Product("Hat", 30m);
             var testVoucherA = new GiftVoucher(-5m);
             var testVoucherB = new GiftVoucher(-15m);
 
+            _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucherA);
             _sut.AddVoucher(testVoucherB);
 
