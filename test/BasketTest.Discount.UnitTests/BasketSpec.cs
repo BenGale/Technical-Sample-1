@@ -43,7 +43,7 @@ namespace BasketTest.Discount.UnitTests
         }
 
         [Test]
-        public void Basket_CalculatesTotal()
+        public void Basket_CalculatesProductsTotal()
         {
             var testProductA = new Product("Hat", 10.50m);
             var testProductB = new Product("Jumper", 54.65m);
@@ -64,6 +64,50 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.Vouchers.Should().HaveCount(1);
             _sut.Vouchers.Single().Should().Be(testVoucher);
+        }
+
+        [Test]
+        public void Basket_AcceptsMultipleGiftVouchers()
+        {
+            var testVoucherA = new GiftVoucher(-5m);
+            var testVoucherB = new GiftVoucher(-15m);
+
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
+
+            _sut.Vouchers.Should().HaveCount(2);
+            _sut.Vouchers.Single().Should().Be(testVoucherA);
+            _sut.Vouchers.Single().Should().Be(testVoucherB);
+        }
+
+        [Test]
+        public void Basket_CalulatesWithGiftVouchers()
+        {
+            var testProductA = new Product("Hat", 10.50m);
+            var testProductB = new Product("Jumper", 54.65m);
+            var testVoucher = new GiftVoucher(-5m);
+
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
+            _sut.AddVoucher(testVoucher);
+
+            _sut.Total().Should().Be(60.15m);
+        }
+
+        [Test]
+        public void Basket_CalulatesWithMulitpleGiftVouchers()
+        {
+            var testProductA = new Product("Hat", 10.50m);
+            var testProductB = new Product("Jumper", 54.65m);
+            var testVoucherA = new GiftVoucher(-5m);
+            var testVoucherB = new GiftVoucher(-10m);
+
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
+
+            _sut.Total().Should().Be(50.15m);
         }
     }
 }
