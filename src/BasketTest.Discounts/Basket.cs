@@ -16,5 +16,10 @@ namespace BasketTest.Discounts
         {
             Products.Add(product);
         }
+
+        public decimal Total()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
