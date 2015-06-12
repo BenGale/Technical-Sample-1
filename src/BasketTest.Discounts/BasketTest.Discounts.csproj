@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Basket.cs" />
+    <Compile Include="Enums\ProductCategoryEnum.cs" />
     <Compile Include="Items\GiftVoucher.cs" />
     <Compile Include="Items\InvalidVoucher.cs" />
     <Compile Include="Items\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VoucherValidation\GiftVouchersNotInTotalValidator.cs" />
     <Compile Include="VoucherValidation\GiftVoucherValueValidator.cs" />
     <Compile Include="VoucherValidation\IVoucherValidator.cs" />
   </ItemGroup>
