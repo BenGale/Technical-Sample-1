@@ -21,17 +21,17 @@ namespace BasketTest.Discounts
             Products.Add(product);
         }
 
+        public void AddVoucher(GiftVoucher voucher)
+        {
+            Vouchers.Add(voucher);
+        }
+
         public decimal Total()
         {
             var productTotal = Products.Sum(product => product.Value);
             var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
 
             return productTotal + voucherTotal;
-        }
-
-        public void AddVoucher(GiftVoucher voucher)
-        {
-            Vouchers.Add(voucher);
         }
     }
 }

@@ -188,3 +188,6 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+BasketTest.v2.ncrunchsolution
+src/BasketTest.Discounts/BasketTest.Discounts.v2.ncrunchproject
+test/BasketTest.Discount.UnitTests/BasketTest.Discount.UnitTests.v2.ncrunchproject
