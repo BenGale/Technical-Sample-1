@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Basket.cs" />
     <Compile Include="Items\GiftVoucher.cs" />
+    <Compile Include="Items\InvalidVoucher.cs" />
     <Compile Include="Items\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

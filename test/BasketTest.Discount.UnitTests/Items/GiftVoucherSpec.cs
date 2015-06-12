@@ -9,26 +9,25 @@ namespace BasketTest.Discount.UnitTests.Items
     public class GiftVoucherSpec
     {
         [Test]
-        public void GiftVoucher_AcceptsNegativeValue()
+        public void GiftVoucher_RejectsNegativeValue()
         {
             Action act = () =>
             {
                 var sut = new GiftVoucher(-10m);
             };
-
-            act.ShouldNotThrow();
+            act.ShouldThrow<ArgumentException>()
+                .WithMessage("Value cannot be negative.");
+            
         }
 
         [Test]
-        public void GiftVoucher_CantHavePositiveValue()
+        public void GiftVoucher_AcceptsPositiveValue()
         {
             Action act = () =>
             {
                 var sut = new GiftVoucher(10m);
             };
-
-            act.ShouldThrow<ArgumentException>()
-                .WithMessage("Value cannot be positive.");
+            act.ShouldNotThrow();
         }
     }
 }

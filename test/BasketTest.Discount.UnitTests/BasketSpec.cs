@@ -59,7 +59,7 @@ namespace BasketTest.Discount.UnitTests
         public void Basket_AcceptsGiftVoucher()
         {
             var testProduct = new Product("Hat", 10m);
-            var testVoucher = new GiftVoucher(-5m);
+            var testVoucher = new GiftVoucher(5m);
 
             _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucher);
@@ -72,8 +72,8 @@ namespace BasketTest.Discount.UnitTests
         public void Basket_AcceptsMultipleGiftVouchers()
         {
             var testProduct = new Product("Hat", 30m);
-            var testVoucherA = new GiftVoucher(-5m);
-            var testVoucherB = new GiftVoucher(-15m);
+            var testVoucherA = new GiftVoucher(5m);
+            var testVoucherB = new GiftVoucher(15m);
 
             _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucherA);
@@ -89,7 +89,7 @@ namespace BasketTest.Discount.UnitTests
         {
             var testProductA = new Product("Hat", 10.50m);
             var testProductB = new Product("Jumper", 54.65m);
-            var testVoucher = new GiftVoucher(-5m);
+            var testVoucher = new GiftVoucher(5m);
 
             _sut.AddProduct(testProductA);
             _sut.AddProduct(testProductB);
@@ -103,8 +103,8 @@ namespace BasketTest.Discount.UnitTests
         {
             var testProductA = new Product("Hat", 10.50m);
             var testProductB = new Product("Jumper", 54.65m);
-            var testVoucherA = new GiftVoucher(-5m);
-            var testVoucherB = new GiftVoucher(-10m);
+            var testVoucherA = new GiftVoucher(5m);
+            var testVoucherB = new GiftVoucher(10m);
 
             _sut.AddProduct(testProductA);
             _sut.AddProduct(testProductB);
@@ -136,8 +136,8 @@ namespace BasketTest.Discount.UnitTests
         public void Basket_AcceptsVoucherRemoval()
         {
             var testProduct = new Product("Hat", 30m);
-            var testVoucherA = new GiftVoucher(-5m);
-            var testVoucherB = new GiftVoucher(-15m);
+            var testVoucherA = new GiftVoucher(5m);
+            var testVoucherB = new GiftVoucher(15m);
 
             _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucherA);
@@ -171,8 +171,8 @@ namespace BasketTest.Discount.UnitTests
         {
             var testProductA = new Product("Hat", 10.50m);
             var testProductB = new Product("Jumper", 54.65m);
-            var testVoucherA = new GiftVoucher(-5m);
-            var testVoucherB = new GiftVoucher(-10m);
+            var testVoucherA = new GiftVoucher(5m);
+            var testVoucherB = new GiftVoucher(10m);
 
             _sut.AddProduct(testProductA);
             _sut.AddProduct(testProductB);
@@ -187,7 +187,7 @@ namespace BasketTest.Discount.UnitTests
         public void Basket_CalulatesWithoutVoucherForTooLargeDiscount()
         {
             var testProduct = new Product("Hat", 10.50m);
-            var testVoucher = new GiftVoucher(-15m);
+            var testVoucher = new GiftVoucher(15m);
 
             _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucher);
@@ -199,7 +199,7 @@ namespace BasketTest.Discount.UnitTests
         public void Basket_CreatesInvalidVoucher_ForTooLargeDiscount()
         {
             var testProduct = new Product("Hat", 25m);
-            var testVoucher = new GiftVoucher(-30m);
+            var testVoucher = new GiftVoucher(30m);
 
             _sut.AddProduct(testProduct);
             _sut.AddVoucher(testVoucher);

@@ -8,9 +8,9 @@ namespace BasketTest.Discounts.Items
 
         public GiftVoucher(decimal value)
         {
-            if (value > 0)
+            if (value < 0)
             {
-                throw new ArgumentException("Value cannot be positive.");
+                throw new ArgumentException("Value cannot be negative.");
             }
 
             Value = value;

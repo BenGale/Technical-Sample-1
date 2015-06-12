@@ -30,11 +30,14 @@ namespace BasketTest.Discounts
 
         public void AddVoucher(GiftVoucher voucher)
         {
-            // TODO: This is not going to be good enough, add tests for other cases.
-            if (Total() + voucher.Value > 0)
+            if (voucher.Value > Total())
             {
-                Vouchers.Add(voucher);
+                InvalidVouchers.Add(new InvalidVoucher(voucher,
+                    "You have not reached the spend threshold for this voucher."));
+                return;
             }
+
+            Vouchers.Add(voucher);
         }
 
         public void RemoveVoucher(GiftVoucher voucher)
@@ -47,7 +50,7 @@ namespace BasketTest.Discounts
             var productTotal = Products.Sum(product => product.Value);
             var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
 
-            return productTotal + voucherTotal;
+            return productTotal - voucherTotal;
         }
     }
 }
