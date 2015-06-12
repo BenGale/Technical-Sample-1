@@ -176,5 +176,17 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.Total().Should().Be(55.15m);
         }
+
+        [Test]
+        public void Basket_ReturnsInvalidMessageForTooLargeDiscount()
+        {
+            var testProduct = new Product("Hat", 10.50m);
+            var testVoucher = new GiftVoucher(-15m);
+
+            _sut.AddProduct(testProduct);
+            _sut.AddVoucher(testVoucher);
+
+            _sut.Total().Should().Be(10.50m);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace BasketTest.Discounts
     {
         public List<Product> Products { get; }
         public List<GiftVoucher> Vouchers { get; }
+        public List<string> StatusMessages { get; set; }
 
         public Basket()
         {
