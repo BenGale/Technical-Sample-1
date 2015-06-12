@@ -1,4 +1,6 @@
-﻿namespace BasketTest.Discounts.Items
+﻿using System;
+
+namespace BasketTest.Discounts.Items
 {
     public class GiftVoucher
     {
@@ -6,6 +8,11 @@
 
         public GiftVoucher(decimal value)
         {
+            if (value > 0)
+            {
+                throw new ArgumentException("Value cannot be positive.");
+            }
+
             Value = value;
         }
     }

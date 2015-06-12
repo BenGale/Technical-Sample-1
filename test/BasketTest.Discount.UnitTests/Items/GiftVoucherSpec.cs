@@ -27,7 +27,7 @@ namespace BasketTest.Discount.UnitTests.Items
                 var sut = new GiftVoucher(10m);
             };
 
-            act.ShouldThrow<ArgumentOutOfRangeException>()
+            act.ShouldThrow<ArgumentException>()
                 .WithMessage("Value cannot be positive.");
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using BasketTest.Discounts;
+using BasketTest.Discounts.Items;
 using FluentAssertions;
 using NUnit.Framework;
 
