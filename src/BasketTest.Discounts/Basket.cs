@@ -10,11 +10,13 @@ namespace BasketTest.Discounts
         public List<Product> Products { get; }
         public List<GiftVoucher> Vouchers { get; }
         public List<string> StatusMessages { get; set; }
+        public List<InvalidVoucher> InvalidVouchers { get; }
 
         public Basket()
         {
             Products = new List<Product>();
             Vouchers = new List<GiftVoucher>();
+            InvalidVouchers = new List<InvalidVoucher>();
         }
 
         public void AddProduct(Product product)

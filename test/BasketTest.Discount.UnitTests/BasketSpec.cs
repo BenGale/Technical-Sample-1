@@ -184,7 +184,7 @@ namespace BasketTest.Discount.UnitTests
         }
 
         [Test]
-        public void Basket_ReturnsInvalidMessageForTooLargeDiscount()
+        public void Basket_CalulatesWithoutVoucherForTooLargeDiscount()
         {
             var testProduct = new Product("Hat", 10.50m);
             var testVoucher = new GiftVoucher(-15m);
@@ -193,6 +193,22 @@ namespace BasketTest.Discount.UnitTests
             _sut.AddVoucher(testVoucher);
 
             _sut.Total().Should().Be(10.50m);
+        }
+
+        [Test]
+        public void Basket_CreatesInvalidVoucher_ForTooLargeDiscount()
+        {
+            var testProduct = new Product("Hat", 25m);
+            var testVoucher = new GiftVoucher(-30m);
+
+            _sut.AddProduct(testProduct);
+            _sut.AddVoucher(testVoucher);
+
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            var invalidVoucher = _sut.InvalidVouchers.Single();
+            invalidVoucher.Voucher.Should().Be(testVoucher);
+            invalidVoucher.Reason.Should().Be(
+                "You have not reached the spend threshold for this voucher.");
         }
     }
 }
