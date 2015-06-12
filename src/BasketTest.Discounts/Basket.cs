@@ -20,10 +20,19 @@ namespace BasketTest.Discounts
         {
             Products.Add(product);
         }
+        public void RemoveProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
 
         public void AddVoucher(GiftVoucher voucher)
         {
             Vouchers.Add(voucher);
+        }
+
+        public void RemoveVoucher(GiftVoucher testVoucherA)
+        {
+            throw new NotImplementedException();
         }
 
         public decimal Total()
