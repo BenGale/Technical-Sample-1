@@ -28,6 +28,12 @@ namespace BasketTest.Discounts.VoucherValidation.Offer
 
             foreach (var offerVoucher in vouchers)
             {
+                if (offerVoucher.CategoryRestriction == null)
+                {
+                    validVouchers.Add(offerVoucher);
+                    continue;
+                }
+
                 var productsInCaegory = groupedProducts.SingleOrDefault(
                     p => p.category == offerVoucher.CategoryRestriction);
                 if (productsInCaegory == null)
