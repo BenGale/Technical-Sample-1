@@ -28,7 +28,7 @@ namespace BasketTest.Discounts.VoucherValidation.Offer
                 {
                     invalidVouchers.Add(new InvalidVoucher(offerVoucher,
                         "You have not reached the spend threshold. " +
-                        $"Spend another {(offerVoucher.Threshold - basketTotal).ToString("C")} " +
+                        $"Spend another {((offerVoucher.Threshold - basketTotal) + 0.01m).ToString("C")} " +
                         $"to receive {offerVoucher.Value.ToString("C")} discount."));
                     continue;
                 }
