@@ -27,7 +27,8 @@ namespace BasketTest.Discount.ComponentTests
 
             var offerSingleValidator = new SingleOfferVoucherValidator();
             var offerVoucherThresholdValidator = new OfferVoucherThresholdValidator(offerSingleValidator);
-            _offerValidator = new OfferVoucherValidatorAdaptor(offerVoucherThresholdValidator);
+            var offerRestrictionValidator = new OfferVoucherRestrictionValidator(offerVoucherThresholdValidator);
+            _offerValidator = new OfferVoucherValidatorAdaptor(offerRestrictionValidator);
 
             _basket = new Basket(new List<IVoucherValidator> {_giftvalidator, _offerValidator});
         }
