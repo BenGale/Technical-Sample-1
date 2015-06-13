@@ -8,14 +8,14 @@ namespace BasketTest.Discounts
 {
     public class Basket
     {
-        private readonly IVoucherValidator _voucherValidator;
+        private readonly List<IVoucherValidator> _voucherValidators;
         public List<Product> Products { get; }
         public List<Voucher> Vouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
 
-        public Basket(IVoucherValidator voucherValidator)
+        public Basket(List<IVoucherValidator> voucherValidators)
         {
-            _voucherValidator = voucherValidator;
+            _voucherValidators = voucherValidators;
 
             Products = new List<Product>();
             Vouchers = new List<Voucher>();
@@ -33,7 +33,7 @@ namespace BasketTest.Discounts
             ValidateBasket();
         }
 
-        public void AddGiftVoucher(Voucher voucher)
+        public void AddVoucher(Voucher voucher)
         {
             Vouchers.Add(voucher);
             ValidateBasket();
@@ -44,17 +44,6 @@ namespace BasketTest.Discounts
             Vouchers.Remove(voucher);
             InvalidVouchers.RemoveAll(invalidVoucher => invalidVoucher.Voucher == voucher);
             ValidateBasket();
-        }
-
-        public void AddOfferVoucher(Voucher voucher)
-        {
-            if (Vouchers.OfType<OfferVoucher>().Any())
-            {
-                InvalidVouchers.Add(new InvalidVoucher(
-                    voucher, "You may only have one offer voucher in the basket."));    
-                 return;
-            }
-            Vouchers.Add(voucher);
         }
 
         public decimal Total()
@@ -72,7 +61,10 @@ namespace BasketTest.Discounts
             // changed.
             Vouchers.AddRange(InvalidVouchers.Select(v => v.Voucher));
             InvalidVouchers.Clear();
-            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, Vouchers));
+            foreach (var voucherValidator in _voucherValidators)
+            {
+                InvalidVouchers.AddRange(voucherValidator.Validate(Products, Vouchers));
+            }
             Vouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
         }
     }

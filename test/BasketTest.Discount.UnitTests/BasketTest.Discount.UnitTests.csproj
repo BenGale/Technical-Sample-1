@@ -63,6 +63,7 @@
     <Compile Include="VoucherValidation\Gift\GiftVouchersNotInTotalValidatorSpec.cs" />
     <Compile Include="VoucherValidation\Gift\GiftVoucherValueValidatorSpec.cs" />
     <Compile Include="VoucherValidation\Offer\OfferVoucherValidatorAdaptorSpec.cs" />
+    <Compile Include="VoucherValidation\Offer\SingleOfferVoucherValidatorSpec.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

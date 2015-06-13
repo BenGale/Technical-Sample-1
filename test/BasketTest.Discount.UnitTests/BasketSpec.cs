@@ -22,7 +22,7 @@ namespace BasketTest.Discount.UnitTests
             _validatorMock.Setup(validator =>
                 validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher>());
-            _sut = new Basket(_validatorMock.Object);
+            _sut = new Basket(new List<IVoucherValidator> { _validatorMock.Object});
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace BasketTest.Discount.UnitTests
             var testVoucher = new GiftVoucher(5m);
 
             _sut.AddProduct(testProduct);
-            _sut.AddGiftVoucher(testVoucher);
+            _sut.AddVoucher(testVoucher);
 
             _sut.Vouchers.Should().HaveCount(1);
             _sut.Vouchers.Single().Should().Be(testVoucher);
@@ -84,8 +84,8 @@ namespace BasketTest.Discount.UnitTests
             var testVoucherB = new GiftVoucher(15m);
 
             _sut.AddProduct(testProduct);
-            _sut.AddGiftVoucher(testVoucherA);
-            _sut.AddGiftVoucher(testVoucherB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
 
             _sut.Vouchers.Should().HaveCount(2);
             _sut.Vouchers.Should().Contain(testVoucherA);
@@ -101,7 +101,7 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.AddProduct(testProductA);
             _sut.AddProduct(testProductB);
-            _sut.AddGiftVoucher(testVoucher);
+            _sut.AddVoucher(testVoucher);
 
             _sut.Total().Should().Be(60.15m);
         }
@@ -116,8 +116,8 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.AddProduct(testProductA);
             _sut.AddProduct(testProductB);
-            _sut.AddGiftVoucher(testVoucherA);
-            _sut.AddGiftVoucher(testVoucherB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
 
             _sut.Total().Should().Be(50.15m);
         }
@@ -148,8 +148,8 @@ namespace BasketTest.Discount.UnitTests
             var testVoucherB = new GiftVoucher(15m);
 
             _sut.AddProduct(testProduct);
-            _sut.AddGiftVoucher(testVoucherA);
-            _sut.AddGiftVoucher(testVoucherB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
 
             _sut.Vouchers.Should().HaveCount(2);
 
@@ -184,8 +184,8 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.AddProduct(testProductA);
             _sut.AddProduct(testProductB);
-            _sut.AddGiftVoucher(testVoucherA);
-            _sut.AddGiftVoucher(testVoucherB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
             _sut.RemoveVoucher(testVoucherA);
 
             _sut.Total().Should().Be(55.15m);
@@ -237,7 +237,7 @@ namespace BasketTest.Discount.UnitTests
                 validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher> { testInvalidVoucher });
 
-            _sut.AddGiftVoucher(testVoucher);
+            _sut.AddVoucher(testVoucher);
 
             _validatorMock.Verify(validator =>
                 validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()),
@@ -255,7 +255,7 @@ namespace BasketTest.Discount.UnitTests
                 validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher> { testInvalidVoucher });
 
-            _sut.AddGiftVoucher(testVoucher);
+            _sut.AddVoucher(testVoucher);
             _sut.RemoveVoucher(testVoucher);
 
             _validatorMock.Verify(validator =>
@@ -276,7 +276,7 @@ namespace BasketTest.Discount.UnitTests
                     return vouchers.Select(voucher => new InvalidVoucher(voucher, "Test")).ToList();
                 });
 
-            _sut.AddGiftVoucher(testVoucher);
+            _sut.AddVoucher(testVoucher);
 
             _sut.InvalidVouchers.Should().HaveCount(1);
             _sut.InvalidVouchers.Single().Voucher.Should().Be(testVoucher);
@@ -291,23 +291,29 @@ namespace BasketTest.Discount.UnitTests
         {
             var testOffer = new OfferVoucher(10m, 15m);
 
-            _sut.AddOfferVoucher(testOffer);
+            _sut.AddVoucher(testOffer);
 
             _sut.Vouchers.Should().Contain(testOffer);
         }
 
         [Test]
-        public void Basket_InvalidatesSubsequentOfferVouchers()
+        public void Basket_CalculatesWithGiftAndOfferVouchers()
         {
-            var testOfferA = new OfferVoucher(10m, 15m);
-            var testOfferB = new OfferVoucher(15m, 30m);
+            var testProductA = new Product("Hat", 10.50m);
+            var testProductB = new Product("Jumper", 54.65m);
+            var testVoucherA = new GiftVoucher(5m);
+            var testVoucherB = new GiftVoucher(5m);
+            var testVoucherC = new OfferVoucher(5m, 5m);
+            var testVoucherD = new OfferVoucher(5m, 5m);
 
-            _sut.AddOfferVoucher(testOfferA);
-            _sut.AddOfferVoucher(testOfferB);
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
+            _sut.AddVoucher(testVoucherA);
+            _sut.AddVoucher(testVoucherB);
+            _sut.AddVoucher(testVoucherC);
+            _sut.AddVoucher(testVoucherD);
 
-            _sut.Vouchers.Should().Contain(testOfferA);
-            _sut.InvalidVouchers.Should().HaveCount(1);
-            _sut.InvalidVouchers.First().Voucher.Should().Be(testOfferB);
+            _sut.Total().Should().Be(45.15m);
         }
     }
 }

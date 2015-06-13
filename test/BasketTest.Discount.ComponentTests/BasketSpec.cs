@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using BasketTest.Discounts;
 using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
@@ -21,7 +22,7 @@ namespace BasketTest.Discount.ComponentTests
             var valueValidator = new GiftVoucherValueValidator();
             var vouchersNotInTotalValidator = new GiftVouchersNotInTotalValidator(valueValidator);
             _validator = new GiftVoucherValidatorAdaptor(vouchersNotInTotalValidator);
-            _basket = new Basket(_validator);
+            _basket = new Basket(new List<IVoucherValidator> {_validator});
         }
 
         [Test]
@@ -31,7 +32,7 @@ namespace BasketTest.Discount.ComponentTests
             var testVoucher = new GiftVoucher(15m);
 
             _basket.AddProduct(testProduct);
-            _basket.AddGiftVoucher(testVoucher);
+            _basket.AddVoucher(testVoucher);
 
             _basket.Total().Should().Be(10.50m);
         }
@@ -43,7 +44,7 @@ namespace BasketTest.Discount.ComponentTests
             var testVoucher = new GiftVoucher(30m);
 
             _basket.AddProduct(testProduct);
-            _basket.AddGiftVoucher(testVoucher);
+            _basket.AddVoucher(testVoucher);
 
             _basket.InvalidVouchers.Should().HaveCount(1);
             var invalidVoucher = _basket.InvalidVouchers.Single();
@@ -61,7 +62,7 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.AddProduct(testProduct);
             _basket.AddProduct(testGiftProduct);
-            _basket.AddGiftVoucher(testVoucher);
+            _basket.AddVoucher(testVoucher);
 
             _basket.InvalidVouchers.Should().HaveCount(1);
             var invalidVoucher = _basket.InvalidVouchers.Single();
@@ -79,7 +80,7 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.AddProduct(testProductA);
             _basket.AddProduct(testProductB);
-            _basket.AddGiftVoucher(testVoucher);
+            _basket.AddVoucher(testVoucher);
 
             _basket.InvalidVouchers.Should().HaveCount(0);
             
@@ -101,7 +102,7 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.AddProduct(testProductA);
             _basket.AddProduct(testProductB);
-            _basket.AddGiftVoucher(testVoucher);
+            _basket.AddVoucher(testVoucher);
 
             _basket.InvalidVouchers.Should().HaveCount(0);
 
@@ -123,9 +124,9 @@ namespace BasketTest.Discount.ComponentTests
             var testVoucherC = new GiftVoucher(7.50m);
 
             _basket.AddProduct(testProduct);
-            _basket.AddGiftVoucher(testVoucherA);
-            _basket.AddGiftVoucher(testVoucherB);
-            _basket.AddGiftVoucher(testVoucherC);
+            _basket.AddVoucher(testVoucherA);
+            _basket.AddVoucher(testVoucherB);
+            _basket.AddVoucher(testVoucherC);
 
             _basket.InvalidVouchers.Should().HaveCount(2);
             _basket.InvalidVouchers[0].Voucher.Should().Be(testVoucherC);
