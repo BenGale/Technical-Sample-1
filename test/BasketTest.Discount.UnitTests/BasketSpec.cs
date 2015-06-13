@@ -285,5 +285,15 @@ namespace BasketTest.Discount.UnitTests
             _sut.Vouchers.Should().HaveCount(0);
             _sut.InvalidVouchers.Should().HaveCount(0);
         }
+
+        [Test]
+        public void Basket_AcceptsOfferVoucher()
+        {
+            var testOffer = new OfferVoucher(10m, 15m);
+
+            _sut.AddOfferVoucher(testOffer);
+
+            _sut.OfferVouchers.Should().HaveCount(1);
+        }
     }
 }

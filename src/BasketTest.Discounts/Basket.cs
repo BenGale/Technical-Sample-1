@@ -12,6 +12,7 @@ namespace BasketTest.Discounts
         public List<Product> Products { get; }
         public List<GiftVoucher> Vouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
+        public List<OfferVoucher> OfferVouchers { get; set; }
 
         public Basket(IVoucherValidator voucherValidator)
         {
@@ -44,6 +45,11 @@ namespace BasketTest.Discounts
             Vouchers.Remove(voucher);
             InvalidVouchers.RemoveAll(invalidVoucher => invalidVoucher.Voucher == voucher);
             ValidateBasket();
+        }
+
+        public void AddOfferVoucher(OfferVoucher offerVoucher)
+        {
+            throw new NotImplementedException();
         }
 
         public decimal Total()
