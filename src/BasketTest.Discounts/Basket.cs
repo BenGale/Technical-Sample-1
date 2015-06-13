@@ -30,13 +30,13 @@ namespace BasketTest.Discounts
         public void RemoveProduct(Product product)
         {
             Products.Remove(product);
+            ValidateBasket();
         }
 
         public void AddVoucher(GiftVoucher voucher)
         {
             Vouchers.Add(voucher);
-            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, Vouchers));
-            RemoveInvalidVouchers();
+            ValidateBasket();
         }
 
         public void RemoveVoucher(GiftVoucher voucher)
@@ -52,8 +52,9 @@ namespace BasketTest.Discounts
             return productTotal - voucherTotal;
         }
 
-        private void RemoveInvalidVouchers()
+        private void ValidateBasket()
         {
+            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, Vouchers));
             Vouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
         }
     }
