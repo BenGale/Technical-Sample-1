@@ -43,7 +43,7 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation
             var invalidVoucher = result.First();
             invalidVoucher.Voucher.Should().Be(testVoucher);
             invalidVoucher.Reason.Should().Be(
-                "You have not reached the spend threshold for this voucher.");
+                "Your total must be above the voucher value, not including gift vouchers.");
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation
             var invalidVoucher = result.First();
             invalidVoucher.Voucher.Should().Be(testVoucherB);
             invalidVoucher.Reason.Should().Be(
-                "You have not reached the spend threshold for this voucher.");
+                "Your total must be above the voucher value, not including gift vouchers.");
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation
             var invalidVoucher = result.First();
             invalidVoucher.Voucher.Should().Be(testVoucherA);
             invalidVoucher.Reason.Should().Be(
-                "You have not reached the spend threshold for this voucher.");
+                "Your total must be above the voucher value, not including gift vouchers.");
         }
     }
 }

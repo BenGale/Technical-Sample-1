@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using BasketTest.Discounts;
+using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
 using BasketTest.Discounts.VoucherValidation;
 using FluentAssertions;
@@ -10,13 +11,14 @@ namespace BasketTest.Discount.ComponentTests
     [TestFixture]
     public class BasketSpec
     {
-        private GiftVoucherValueValidator _validator;
+        private IVoucherValidator _validator;
         private Basket _basket;
 
         [SetUp]
         public void Setup()
         {
-            _validator = new GiftVoucherValueValidator();
+            var valueValidator = new GiftVoucherValueValidator();
+            _validator = new GiftVouchersNotInTotalValidator(valueValidator);
             _basket = new Basket(_validator);
         }
 
@@ -45,7 +47,25 @@ namespace BasketTest.Discount.ComponentTests
             var invalidVoucher = _basket.InvalidVouchers.Single();
             invalidVoucher.Voucher.Should().Be(testVoucher);
             invalidVoucher.Reason.Should().Be(
-                "You have not reached the spend threshold for this voucher.");
+                "Your total must be above the voucher value, not including gift vouchers.");
+        }
+
+        [Test]
+        public void Basket_CreatesInvalidVoucher_ForTooLargeDiscount_WithGiftVoucher()
+        {
+            var testProduct = new Product("Hat", 25m);
+            var testGiftProduct = new Product("Voucher", 10m, ProductCategory.GiftVoucher);
+            var testVoucher = new GiftVoucher(30m);
+
+            _basket.AddProduct(testProduct);
+            _basket.AddProduct(testGiftProduct);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.InvalidVouchers.Should().HaveCount(1);
+            var invalidVoucher = _basket.InvalidVouchers.Single();
+            invalidVoucher.Voucher.Should().Be(testVoucher);
+            invalidVoucher.Reason.Should().Be(
+                "Your total must be above the voucher value, not including gift vouchers.");
         }
     }
 }

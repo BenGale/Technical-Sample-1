@@ -22,7 +22,7 @@ namespace BasketTest.Discounts.VoucherValidation
                 if (voucher.Value > runningTotal)
                 {
                     invalidVouchers.Add(new InvalidVoucher(voucher,
-                    "You have not reached the spend threshold for this voucher."));
+                    "Your total must be above the voucher value, not including gift vouchers."));
                     continue;
                 }
                 runningTotal -= voucher.Value;

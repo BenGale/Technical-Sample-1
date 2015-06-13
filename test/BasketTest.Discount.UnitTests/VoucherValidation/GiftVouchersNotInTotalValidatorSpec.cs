@@ -4,6 +4,7 @@ using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
 using BasketTest.Discounts.VoucherValidation;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 
 namespace BasketTest.Discount.UnitTests.VoucherValidation
@@ -16,7 +17,8 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation
         [SetUp]
         public void Setup()
         {
-            _sut = new GiftVouchersNotInTotalValidator();
+            var mockValidator = new Mock<GiftVoucherValueValidator>();
+            _sut = new GiftVouchersNotInTotalValidator(mockValidator.Object);
         }
 
         [Test]
@@ -44,7 +46,7 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation
             var invalidVoucher = result.First();
             invalidVoucher.Voucher.Should().Be(testVoucher);
             invalidVoucher.Reason.Should().Be(
-                "Your total must be above the voicher value, not including gift vouchers.");
+                "Your total must be above the voucher value, not including gift vouchers.");
         }
     }
 }
