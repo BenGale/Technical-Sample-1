@@ -38,5 +38,31 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
             result.First().Voucher.Should().Be(testVoucher);
             result.First().Reason.Should().Be("There are no products in your basket applicable to this voucher.");
         }
+
+        [Test]
+        public void Validator_RemovesVoucher_WithCategorySpendTooLow()
+        {
+            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
+            var testProduct = new Product("Hat", 5m, ProductCategory.HeadWear);
+
+            var result = _sut.Validate(new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
+
+            result.Should().HaveCount(1);
+            result.First().Voucher.Should().Be(testVoucher);
+            result.First().Reason.Should().Be("You have no spent enough in this product category.");
+        }
+
+        [Test]
+        public void Validator_AcceptsValidVoucher()
+        {
+            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
+            var testProduct = new Product("Hat", 15m, ProductCategory.HeadWear);
+
+            var result = _sut.Validate(new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
+
+            result.Should().HaveCount(0);
+            _offerValidatorMock.Verify(m => m.Validate(It.IsAny<List<Product>>(),
+                It.Is<List<OfferVoucher>>(list => list.Count() == 1)));
+        }
     }
 }

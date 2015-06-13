@@ -54,6 +54,7 @@
     <Compile Include="VoucherValidation\Gift\IGiftVoucherValidator.cs" />
     <Compile Include="VoucherValidation\Offer\IOfferVoucherValidator.cs" />
     <Compile Include="VoucherValidation\IVoucherValidator.cs" />
+    <Compile Include="VoucherValidation\Offer\OfferVoucherRestrictionValidator.cs" />
     <Compile Include="VoucherValidation\Offer\OfferVoucherThresholdValidator.cs" />
     <Compile Include="VoucherValidation\Offer\OfferVoucherValidatorAdaptor.cs" />
     <Compile Include="VoucherValidation\Offer\SingleOfferVoucherValidator.cs" />
