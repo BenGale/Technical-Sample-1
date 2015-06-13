@@ -49,9 +49,22 @@ namespace BasketTest.Discounts
         public decimal Total()
         {
             var productTotal = Products.Sum(product => product.Value);
-            var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
-
-            return productTotal - voucherTotal;
+            var runningTotal = productTotal;
+            foreach (var voucher in Vouchers)
+            {
+                if ((voucher as OfferVoucher)?.CategoryRestriction != null)
+                {
+                    var offerVoucher = (OfferVoucher) voucher;
+                    var categoryTotal = Products.Where(
+                        product => product.Category == offerVoucher.CategoryRestriction)
+                        .Sum(product => product.Value);
+                    runningTotal -= offerVoucher.Value < categoryTotal ? 
+                        offerVoucher.Value : categoryTotal;
+                    continue;
+                }
+                runningTotal -= voucher.Value;
+            }
+            return runningTotal;
         }
 
         private void ValidateBasket()
