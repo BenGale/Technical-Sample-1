@@ -22,6 +22,7 @@ namespace BasketTest.Discounts
             Products = new List<Product>();
             GiftVouchers = new List<GiftVoucher>();
             InvalidVouchers = new List<InvalidVoucher>();
+            InvalidOfferVouchers = new List<InvalidOfferVoucher>();
         }
 
         public void AddProduct(Product product)
@@ -50,6 +51,12 @@ namespace BasketTest.Discounts
 
         public void AddOfferVoucher(OfferVoucher offerVoucher)
         {
+            if (OfferVoucher != null)
+            {
+                InvalidOfferVouchers.Add(new InvalidOfferVoucher(
+                    offerVoucher, "You can only use one offer voucher."));
+                return;
+            }
             OfferVoucher = offerVoucher;
         }
 

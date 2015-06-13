@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasketSpec.cs" />
+    <Compile Include="Items\OfferVoucherSpec.cs" />
     <Compile Include="Items\GiftVoucherSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VoucherValidation\GiftVouchersNotInTotalValidatorSpec.cs" />

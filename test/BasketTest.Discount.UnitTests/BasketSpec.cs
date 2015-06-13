@@ -300,14 +300,14 @@ namespace BasketTest.Discount.UnitTests
         public void Basket_InvalidatesSubsequentOfferVouchers()
         {
             var testOfferA = new OfferVoucher(10m, 15m);
-            var testOfferB = new OfferVoucher(10m, 15m);
+            var testOfferB = new OfferVoucher(15m, 30m);
 
             _sut.AddOfferVoucher(testOfferA);
             _sut.AddOfferVoucher(testOfferB);
 
             _sut.OfferVoucher.Should().Be(testOfferA);
             _sut.InvalidOfferVouchers.Should().HaveCount(1);
-            _sut.InvalidVouchers.First().Voucher.Should().Be(testOfferB);
+            _sut.InvalidOfferVouchers.First().Voucher.Should().Be(testOfferB);
         }
     }
 }
