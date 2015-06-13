@@ -13,15 +13,16 @@ namespace BasketTest.Discount.UnitTests
     public class BasketSpec
     {
         private Basket _sut;
+        private Mock<IVoucherValidator> _validatorMock;
 
         [SetUp]
         public void Setup()
         {
-            var validatorMock = new Mock<IVoucherValidator>();
-            validatorMock.Setup(validator =>
+            _validatorMock = new Mock<IVoucherValidator>();
+            _validatorMock.Setup(validator =>
                 validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
                 .Returns(new List<InvalidVoucher>());
-            _sut = new Basket(validatorMock.Object);
+            _sut = new Basket(_validatorMock.Object);
         }
 
         [Test]
@@ -188,6 +189,80 @@ namespace BasketTest.Discount.UnitTests
             _sut.RemoveVoucher(testVoucherA);
 
             _sut.Total().Should().Be(55.15m);
+        }
+
+        [Test]
+        public void Basket_Validates_OnProductAdded()
+        {
+            var testInvalidVoucher = new InvalidVoucher(
+                new GiftVoucher(1m), "Test Reason");
+            _validatorMock.Setup(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                .Returns(new List<InvalidVoucher> { testInvalidVoucher });
+
+            _sut.AddProduct(new Product("Hat", 10m));
+
+            _validatorMock.Verify(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()), 
+                Times.Once);
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
+        }
+
+        [Test]
+        public void Basket_Validates_OnProductRemoved()
+        {
+            var testInvalidVoucher = new InvalidVoucher(
+                new GiftVoucher(1m), "Test Reason");
+            _validatorMock.Setup(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                .Returns(new List<InvalidVoucher> { testInvalidVoucher });
+
+            _sut.AddProduct(new Product("Hat", 10m));
+            _sut.RemoveProduct(new Product("Hat", 10m));
+
+            _validatorMock.Verify(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()),
+                Times.Exactly(2));
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
+        }
+
+        [Test]
+        public void Basket_Validates_OnVoucherAdded()
+        {
+            var testVoucher = new GiftVoucher(1m);
+            var testInvalidVoucher = new InvalidVoucher(testVoucher, "Test Reason");
+            _validatorMock.Setup(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                .Returns(new List<InvalidVoucher> { testInvalidVoucher });
+
+            _sut.AddVoucher(testVoucher);
+
+            _validatorMock.Verify(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()),
+                Times.Once);
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
+        }
+
+        [Test]
+        public void Basket_Validates_OnVoucherRemoved()
+        {
+            var testVoucher = new GiftVoucher(1m);
+            var testInvalidVoucher = new InvalidVoucher(testVoucher, "Test Reason");
+            _validatorMock.Setup(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                .Returns(new List<InvalidVoucher> { testInvalidVoucher });
+
+            _sut.AddVoucher(testVoucher);
+            _sut.RemoveVoucher(testVoucher);
+
+            _validatorMock.Verify(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()),
+                Times.Exactly(2));
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
         }
     }
 }
