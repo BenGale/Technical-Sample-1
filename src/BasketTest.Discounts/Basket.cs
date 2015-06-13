@@ -42,6 +42,7 @@ namespace BasketTest.Discounts
         public void RemoveVoucher(GiftVoucher voucher)
         {
             Vouchers.Remove(voucher);
+            InvalidVouchers.RemoveAll(invalidVoucher => invalidVoucher.Voucher == voucher);
             ValidateBasket();
         }
 
