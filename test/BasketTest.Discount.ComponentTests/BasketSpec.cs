@@ -89,5 +89,27 @@ namespace BasketTest.Discount.ComponentTests
             invalidVoucher.Reason.Should().Be(
                 "Your total must be above the voucher value, not including gift vouchers.");
         }
+
+        [Test]
+        public void Basket_RemovesInvalidVoucher_WhenProductIsAdded()
+        {
+            var testProductA = new Product("Hat", 10m);
+            var testProductB = new Product("Hat", 10m);
+            var testVoucher = new GiftVoucher(15m);
+
+            _basket.AddProduct(testProductA);
+            _basket.AddProduct(testProductB);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.InvalidVouchers.Should().HaveCount(0);
+
+            _basket.RemoveProduct(testProductA);
+
+            _basket.InvalidVouchers.Should().HaveCount(1);
+
+            _basket.AddProduct(testProductA);
+
+            _basket.InvalidVouchers.Should().HaveCount(0);
+        }
     }
 }
