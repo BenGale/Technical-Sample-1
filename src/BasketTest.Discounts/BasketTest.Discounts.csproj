@@ -48,10 +48,13 @@
     <Compile Include="Items\OfferVoucher.cs" />
     <Compile Include="Items\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VoucherValidation\GiftVoucherValidatorAdaptor.cs" />
-    <Compile Include="VoucherValidation\GiftVouchersNotInTotalValidator.cs" />
-    <Compile Include="VoucherValidation\GiftVoucherValueValidator.cs" />
+    <Compile Include="VoucherValidation\Gift\GiftVoucherValidatorAdaptor.cs" />
+    <Compile Include="VoucherValidation\Gift\GiftVouchersNotInTotalValidator.cs" />
+    <Compile Include="VoucherValidation\Gift\GiftVoucherValueValidator.cs" />
+    <Compile Include="VoucherValidation\Gift\IGiftVoucherValidator.cs" />
+    <Compile Include="VoucherValidation\Offer\IOfferVoucherValidator.cs" />
     <Compile Include="VoucherValidation\IVoucherValidator.cs" />
+    <Compile Include="VoucherValidation\Offer\OfferVoucherValidatorAdaptor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

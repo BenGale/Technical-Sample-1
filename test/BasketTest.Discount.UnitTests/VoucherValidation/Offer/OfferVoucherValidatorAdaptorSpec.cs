@@ -4,7 +4,7 @@ using BasketTest.Discounts.VoucherValidation.Offer;
 using Moq;
 using NUnit.Framework;
 
-namespace BasketTest.Discount.UnitTests.VoucherValidation
+namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
 {
     [TestFixture]
     public class OfferVoucherValidatorAdaptorSpec

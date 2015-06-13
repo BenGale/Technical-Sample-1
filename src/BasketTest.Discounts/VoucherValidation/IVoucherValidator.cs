@@ -8,10 +8,4 @@ namespace BasketTest.Discounts.VoucherValidation
         List<InvalidVoucher> Validate(
             List<Product> products, List<Voucher> vouchers);
     }
-
-    public interface IGiftVoucherValidator
-    {
-        List<InvalidVoucher> Validate(
-            List<Product> products, List<GiftVoucher> vouchers);
-    }
 }

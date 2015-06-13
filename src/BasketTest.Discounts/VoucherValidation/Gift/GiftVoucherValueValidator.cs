@@ -2,7 +2,7 @@
 using System.Linq;
 using BasketTest.Discounts.Items;
 
-namespace BasketTest.Discounts.VoucherValidation
+namespace BasketTest.Discounts.VoucherValidation.Gift
 {
     /// <summary>
     /// This validator will check that the value of gift vouchers

@@ -3,6 +3,7 @@ using BasketTest.Discounts;
 using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
 using BasketTest.Discounts.VoucherValidation;
+using BasketTest.Discounts.VoucherValidation.Gift;
 using FluentAssertions;
 using NUnit.Framework;
 

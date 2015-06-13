@@ -3,7 +3,7 @@ using System.Linq;
 using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
 
-namespace BasketTest.Discounts.VoucherValidation
+namespace BasketTest.Discounts.VoucherValidation.Gift
 {
     public class GiftVouchersNotInTotalValidator : IGiftVoucherValidator
     {

@@ -2,13 +2,12 @@
 using System.Linq;
 using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
-using BasketTest.Discounts.VoucherValidation;
 using BasketTest.Discounts.VoucherValidation.Gift;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace BasketTest.Discount.UnitTests.VoucherValidation
+namespace BasketTest.Discount.UnitTests.VoucherValidation.Gift
 {
     [TestFixture]
     public class GiftVouchersNotInTotalValidatorSpec
