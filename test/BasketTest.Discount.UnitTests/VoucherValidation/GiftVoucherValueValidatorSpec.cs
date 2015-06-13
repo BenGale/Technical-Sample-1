@@ -2,6 +2,7 @@
 using System.Linq;
 using BasketTest.Discounts.Items;
 using BasketTest.Discounts.VoucherValidation;
+using BasketTest.Discounts.VoucherValidation.Gift;
 using FluentAssertions;
 using NUnit.Framework;
 
