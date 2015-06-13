@@ -111,6 +111,28 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.InvalidVouchers.Should().HaveCount(0);
         }
-        
+
+        [Test]
+        public void Basket_RemovesInvalidVoucher_WhenVoucherIsRemoved()
+        {
+            var testProduct = new Product("Hat", 10m);
+            var testVoucherA = new GiftVoucher(5m);
+            var testVoucherB = new GiftVoucher(8m);
+            var testVoucherC = new GiftVoucher(7.50m);
+
+            _basket.AddProduct(testProduct);
+            _basket.AddVoucher(testVoucherA);
+            _basket.AddVoucher(testVoucherB);
+            _basket.AddVoucher(testVoucherC);
+
+            _basket.InvalidVouchers.Should().HaveCount(2);
+            _basket.InvalidVouchers[0].Voucher.Should().Be(testVoucherC);
+            _basket.InvalidVouchers[1].Voucher.Should().Be(testVoucherA);
+
+            _basket.RemoveVoucher(testVoucherB);
+
+            _basket.InvalidVouchers.Should().HaveCount(1);
+            _basket.InvalidVouchers[0].Voucher.Should().Be(testVoucherA);
+        }
     }
 }
