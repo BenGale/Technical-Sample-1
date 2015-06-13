@@ -13,6 +13,7 @@ namespace BasketTest.Discounts
         public List<GiftVoucher> GiftVouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
         public OfferVoucher OfferVoucher { get; set; }
+        public List<InvalidOfferVoucher> InvalidOfferVouchers { get; set; }
 
         public Basket(IGiftVoucherValidator giftVoucherValidator)
         {
