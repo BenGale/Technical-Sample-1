@@ -10,16 +10,15 @@ namespace BasketTest.Discounts
     {
         private readonly IVoucherValidator _voucherValidator;
         public List<Product> Products { get; }
-        public List<GiftVoucher> GiftVouchers { get; }
+        public List<Voucher> Vouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
-        public OfferVoucher OfferVoucher { get; set; }
 
         public Basket(IVoucherValidator voucherValidator)
         {
             _voucherValidator = voucherValidator;
 
             Products = new List<Product>();
-            GiftVouchers = new List<GiftVoucher>();
+            Vouchers = new List<Voucher>();
             InvalidVouchers = new List<InvalidVoucher>();
         }
 
@@ -34,34 +33,34 @@ namespace BasketTest.Discounts
             ValidateBasket();
         }
 
-        public void AddGiftVoucher(GiftVoucher voucher)
+        public void AddGiftVoucher(Voucher voucher)
         {
-            GiftVouchers.Add(voucher);
+            Vouchers.Add(voucher);
             ValidateBasket();
         }
 
-        public void RemoveVoucher(GiftVoucher voucher)
+        public void RemoveVoucher(Voucher voucher)
         {
-            GiftVouchers.Remove(voucher);
+            Vouchers.Remove(voucher);
             InvalidVouchers.RemoveAll(invalidVoucher => invalidVoucher.Voucher == voucher);
             ValidateBasket();
         }
 
-        public void AddOfferVoucher(OfferVoucher offerVoucher)
+        public void AddOfferVoucher(Voucher voucher)
         {
-            if (OfferVoucher != null)
+            if (Vouchers.OfType<OfferVoucher>().Any())
             {
                 InvalidVouchers.Add(new InvalidVoucher(
-                    offerVoucher, "You can only use one offer voucher."));
-                return;
+                    voucher, "You may only have one offer voucher in the basket."));    
+                 return;
             }
-            OfferVoucher = offerVoucher;
+            Vouchers.Add(voucher);
         }
 
         public decimal Total()
         {
             var productTotal = Products.Sum(product => product.Value);
-            var voucherTotal = GiftVouchers.Sum(voucher => voucher.Value);
+            var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
 
             return productTotal - voucherTotal;
         }
@@ -71,18 +70,10 @@ namespace BasketTest.Discounts
             // Here we want to reaccess the basket as if all vouchers are valid
             // and see what the validators decide now that the variables have
             // changed.
-            GiftVouchers.AddRange(
-                InvalidVouchers
-                .Where(v => v.Voucher is GiftVoucher)
-                .Select(v => (GiftVoucher)v.Voucher));
+            Vouchers.AddRange(InvalidVouchers.Select(v => v.Voucher));
             InvalidVouchers.Clear();
-
-            // TODO: I'll combine the vouchers into one list soon
-            var voucherList = new List<Voucher>();
-            voucherList.AddRange(GiftVouchers);
-
-            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, voucherList));
-            GiftVouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
+            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, Vouchers));
+            Vouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
         }
     }
 }
