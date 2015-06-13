@@ -29,7 +29,7 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
         [Test]
         public void Validator_RemovesVoucher_WithNoMatchingCategory()
         {
-            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
+            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadGear);
             var testProduct = new Product("Laptop", 1000m);
 
             var result = _sut.Validate(new List<Product> {testProduct}, new List<OfferVoucher> {testVoucher});
@@ -40,24 +40,10 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
         }
 
         [Test]
-        public void Validator_RemovesVoucher_WithCategorySpendTooLow()
-        {
-            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
-            var testProduct = new Product("Hat", 5m, ProductCategory.HeadWear);
-
-            var result = _sut.Validate(
-                new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
-
-            result.Should().HaveCount(1);
-            result.First().Voucher.Should().Be(testVoucher);
-            result.First().Reason.Should().Be("You have no spent enough in this product category.");
-        }
-
-        [Test]
         public void Validator_AcceptsValidVoucher()
         {
-            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
-            var testProduct = new Product("Hat", 15m, ProductCategory.HeadWear);
+            var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadGear);
+            var testProduct = new Product("Hat", 15m, ProductCategory.HeadGear);
 
             var result = _sut.Validate(
                 new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
@@ -71,7 +57,7 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
         public void Validator_IgnoresVouchersWithNoRestriction()
         {
             var testVoucher = new OfferVoucher(10m, 50m);
-            var testProduct = new Product("Hat", 150m, ProductCategory.HeadWear);
+            var testProduct = new Product("Hat", 150m, ProductCategory.HeadGear);
 
             var result = _sut.Validate(
                 new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
