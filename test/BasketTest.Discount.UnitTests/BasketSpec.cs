@@ -293,7 +293,7 @@ namespace BasketTest.Discount.UnitTests
 
             _sut.AddOfferVoucher(testOffer);
 
-            _sut.OfferVouchers.Should().HaveCount(1);
+            _sut.OfferVoucher.Should().Be(testOffer);
         }
     }
 }

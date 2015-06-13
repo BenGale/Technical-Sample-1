@@ -12,7 +12,7 @@ namespace BasketTest.Discounts
         public List<Product> Products { get; }
         public List<GiftVoucher> Vouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
-        public List<OfferVoucher> OfferVouchers { get; set; }
+        public OfferVoucher OfferVoucher { get; set; }
 
         public Basket(IVoucherValidator voucherValidator)
         {
@@ -49,7 +49,7 @@ namespace BasketTest.Discounts
 
         public void AddOfferVoucher(OfferVoucher offerVoucher)
         {
-            throw new NotImplementedException();
+            OfferVoucher = offerVoucher;
         }
 
         public decimal Total()
