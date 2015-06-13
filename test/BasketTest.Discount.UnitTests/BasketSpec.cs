@@ -13,14 +13,14 @@ namespace BasketTest.Discount.UnitTests
     public class BasketSpec
     {
         private Basket _sut;
-        private Mock<IGiftVoucherValidator> _validatorMock;
+        private Mock<IVoucherValidator> _validatorMock;
 
         [SetUp]
         public void Setup()
         {
-            _validatorMock = new Mock<IGiftVoucherValidator>();
+            _validatorMock = new Mock<IVoucherValidator>();
             _validatorMock.Setup(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher>());
             _sut = new Basket(_validatorMock.Object);
         }
@@ -197,13 +197,13 @@ namespace BasketTest.Discount.UnitTests
             var testInvalidVoucher = new InvalidVoucher(
                 new GiftVoucher(1m), "Test Reason");
             _validatorMock.Setup(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher> { testInvalidVoucher });
 
             _sut.AddProduct(new Product("Hat", 10m));
 
             _validatorMock.Verify(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()), 
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()), 
                 Times.Once);
             _sut.InvalidVouchers.Should().HaveCount(1);
             _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
@@ -215,14 +215,14 @@ namespace BasketTest.Discount.UnitTests
             var testInvalidVoucher = new InvalidVoucher(
                 new GiftVoucher(1m), "Test Reason");
             _validatorMock.Setup(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher> { testInvalidVoucher });
 
             _sut.AddProduct(new Product("Hat", 10m));
             _sut.RemoveProduct(new Product("Hat", 10m));
 
             _validatorMock.Verify(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()),
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()),
                 Times.Exactly(2));
             _sut.InvalidVouchers.Should().HaveCount(1);
             _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
@@ -234,13 +234,13 @@ namespace BasketTest.Discount.UnitTests
             var testVoucher = new GiftVoucher(1m);
             var testInvalidVoucher = new InvalidVoucher(testVoucher, "Test Reason");
             _validatorMock.Setup(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher> { testInvalidVoucher });
 
             _sut.AddGiftVoucher(testVoucher);
 
             _validatorMock.Verify(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()),
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()),
                 Times.Once);
             _sut.InvalidVouchers.Should().HaveCount(1);
             _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
@@ -252,14 +252,14 @@ namespace BasketTest.Discount.UnitTests
             var testVoucher = new GiftVoucher(1m);
             var testInvalidVoucher = new InvalidVoucher(testVoucher, "Test Reason");
             _validatorMock.Setup(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
                 .Returns(new List<InvalidVoucher> { testInvalidVoucher });
 
             _sut.AddGiftVoucher(testVoucher);
             _sut.RemoveVoucher(testVoucher);
 
             _validatorMock.Verify(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()),
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()),
                 Times.Exactly(2));
             _sut.InvalidVouchers.Should().HaveCount(1);
             _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
@@ -270,8 +270,8 @@ namespace BasketTest.Discount.UnitTests
         {
             var testVoucher = new GiftVoucher(1m);
             _validatorMock.Setup(validator =>
-                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
-                .Returns((List<Product> products, List<GiftVoucher> vouchers) =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<Voucher>>()))
+                .Returns((List<Product> products, List<Voucher> vouchers) =>
                 {
                     return vouchers.Select(voucher => new InvalidVoucher(voucher, "Test")).ToList();
                 });

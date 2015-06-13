@@ -11,14 +11,15 @@ namespace BasketTest.Discount.ComponentTests
     [TestFixture]
     public class BasketSpec
     {
-        private IGiftVoucherValidator _validator;
+        private IVoucherValidator _validator;
         private Basket _basket;
 
         [SetUp]
         public void Setup()
         {
             var valueValidator = new GiftVoucherValueValidator();
-            _validator = new GiftVouchersNotInTotalValidator(valueValidator);
+            var vouchersNotInTotalValidator = new GiftVouchersNotInTotalValidator(valueValidator);
+            _validator = new GiftVoucherValidatorAdaptor(vouchersNotInTotalValidator);
             _basket = new Basket(_validator);
         }
 

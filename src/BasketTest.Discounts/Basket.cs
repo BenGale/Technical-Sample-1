@@ -8,15 +8,15 @@ namespace BasketTest.Discounts
 {
     public class Basket
     {
-        private readonly IGiftVoucherValidator _giftVoucherValidator;
+        private readonly IVoucherValidator _voucherValidator;
         public List<Product> Products { get; }
         public List<GiftVoucher> GiftVouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
         public OfferVoucher OfferVoucher { get; set; }
 
-        public Basket(IGiftVoucherValidator giftVoucherValidator)
+        public Basket(IVoucherValidator voucherValidator)
         {
-            _giftVoucherValidator = giftVoucherValidator;
+            _voucherValidator = voucherValidator;
 
             Products = new List<Product>();
             GiftVouchers = new List<GiftVoucher>();
@@ -76,7 +76,12 @@ namespace BasketTest.Discounts
                 .Where(v => v.Voucher is GiftVoucher)
                 .Select(v => (GiftVoucher)v.Voucher));
             InvalidVouchers.Clear();
-            InvalidVouchers.AddRange(_giftVoucherValidator.Validate(Products, GiftVouchers));
+
+            // TODO: I'll combine the vouchers into one list soon
+            var voucherList = new List<Voucher>();
+            voucherList.AddRange(GiftVouchers);
+
+            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, voucherList));
             GiftVouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
         }
     }
