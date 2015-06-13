@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BasketTest.Discounts;
+using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
 using BasketTest.Discounts.VoucherValidation;
 using FluentAssertions;
@@ -314,6 +315,20 @@ namespace BasketTest.Discount.UnitTests
             _sut.AddVoucher(testVoucherD);
 
             _sut.Total().Should().Be(45.15m);
+        }
+
+        [Test]
+        public void Basket_CalulatesWithOfferRestrictionAndValueAboveProductValue()
+        {
+            var testProductA = new Product("Light", 10m, ProductCategory.HeadGear);
+            var testProductB = new Product("Jumper", 20m);
+            var testVoucher = new OfferVoucher(15m, 5m, ProductCategory.HeadGear);
+
+            _sut.AddProduct(testProductA);
+            _sut.AddProduct(testProductB);
+            _sut.AddVoucher(testVoucher);
+
+            _sut.Total().Should().Be(20m);
         }
     }
 }
