@@ -160,5 +160,21 @@ namespace BasketTest.Discount.ComponentTests
             _basket.InvalidVouchers.First().Reason.Should().Be(
                 "You have not reached the spend threshold. Spend another £25.01 to receive £5.00 discount.");
         }
+
+        [Test]
+        public void Basket_CalculatesOfferAndGift()
+        {
+            var testProductA = new Product("Hat", 25m);
+            var testProductB = new Product("Jumper", 26m);
+            var testVoucherA = new OfferVoucher(5m, 50m);
+            var testVoucherB = new GiftVoucher(5m);
+
+            _basket.AddProduct(testProductA);
+            _basket.AddProduct(testProductB);
+            _basket.AddVoucher(testVoucherA);
+            _basket.AddVoucher(testVoucherB);
+
+            _basket.Total().Should().Be(41m);
+        }
     }
 }
