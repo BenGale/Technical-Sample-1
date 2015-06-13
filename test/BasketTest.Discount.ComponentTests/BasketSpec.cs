@@ -177,5 +177,38 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.Total().Should().Be(41m);
         }
+
+        [Test]
+        public void Basket_CaculatesOfferWithUnmetRestriction()
+        {
+            var testProductA = new Product("Hat", 25m);
+            var testProductB = new Product("Jumper", 26m);
+            var testVoucher = new OfferVoucher(5m, 50m, ProductCategory.HeadGear);
+
+            _basket.AddProduct(testProductA);
+            _basket.AddProduct(testProductB);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.Total().Should().Be(51m);
+            _basket.InvalidVouchers.First().Reason.Should().Be(
+                "There are no products in your basket applicable to this voucher.");
+        }
+
+        [Test]
+        public void Basket_CaculatesOfferWithRestriction()
+        {
+            var testProductA = new Product("Hat", 25m);
+            var testProductB = new Product("Jumper", 26m);
+            var testProductC = new Product("Head Light", 3.50m, ProductCategory.HeadGear);
+            var testVoucher = new OfferVoucher(5m, 50m, ProductCategory.HeadGear);
+
+            _basket.AddProduct(testProductA);
+            _basket.AddProduct(testProductB);
+            _basket.AddProduct(testProductC);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.Total().Should().Be(51m);
+            _basket.InvalidVouchers.Should().HaveCount(0);
+        }
     }
 }

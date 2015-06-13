@@ -2,6 +2,6 @@
 {
     public enum ProductCategory
     {
-       GiftVoucher, HeadWear, Misc
+       GiftVoucher, HeadGear, Misc
     }
 }
