@@ -45,7 +45,8 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
             var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
             var testProduct = new Product("Hat", 5m, ProductCategory.HeadWear);
 
-            var result = _sut.Validate(new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
+            var result = _sut.Validate(
+                new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
 
             result.Should().HaveCount(1);
             result.First().Voucher.Should().Be(testVoucher);
@@ -58,11 +59,24 @@ namespace BasketTest.Discount.UnitTests.VoucherValidation.Offer
             var testVoucher = new OfferVoucher(10m, 50m, ProductCategory.HeadWear);
             var testProduct = new Product("Hat", 15m, ProductCategory.HeadWear);
 
-            var result = _sut.Validate(new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
+            var result = _sut.Validate(
+                new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
 
             result.Should().HaveCount(0);
             _offerValidatorMock.Verify(m => m.Validate(It.IsAny<List<Product>>(),
                 It.Is<List<OfferVoucher>>(list => list.Count() == 1)));
+        }
+
+        [Test]
+        public void Validator_IgnoresVouchersWithNoRestriction()
+        {
+            var testVoucher = new OfferVoucher(10m, 50m);
+            var testProduct = new Product("Hat", 150m, ProductCategory.HeadWear);
+
+            var result = _sut.Validate(
+                new List<Product> { testProduct }, new List<OfferVoucher> { testVoucher });
+
+            result.Should().HaveCount(0);
         }
     }
 }
