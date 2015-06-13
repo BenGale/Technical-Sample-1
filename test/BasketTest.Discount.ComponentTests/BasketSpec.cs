@@ -111,5 +111,6 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.InvalidVouchers.Should().HaveCount(0);
         }
+        
     }
 }

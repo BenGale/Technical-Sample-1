@@ -264,5 +264,26 @@ namespace BasketTest.Discount.UnitTests
             _sut.InvalidVouchers.Should().HaveCount(1);
             _sut.InvalidVouchers.Single().Should().Be(testInvalidVoucher);
         }
+
+        [Test]
+        public void Basket_AllowsRemovalOfInvalidVoucher()
+        {
+            var testVoucher = new GiftVoucher(1m);
+            _validatorMock.Setup(validator =>
+                validator.Validate(It.IsAny<List<Product>>(), It.IsAny<List<GiftVoucher>>()))
+                .Returns((List<Product> products, List<GiftVoucher> vouchers) =>
+                {
+                    return vouchers.Select(voucher => new InvalidVoucher(voucher, "Test")).ToList();
+                });
+
+            _sut.AddVoucher(testVoucher);
+
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            _sut.InvalidVouchers.Single().Voucher.Should().Be(testVoucher);
+
+            _sut.RemoveVoucher(testVoucher);
+            _sut.Vouchers.Should().HaveCount(0);
+            _sut.InvalidVouchers.Should().HaveCount(0);
+        }
     }
 }
