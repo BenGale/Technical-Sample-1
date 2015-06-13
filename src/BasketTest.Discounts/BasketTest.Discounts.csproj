@@ -42,8 +42,8 @@
   <ItemGroup>
     <Compile Include="Basket.cs" />
     <Compile Include="Enums\ProductCategoryEnum.cs" />
+    <Compile Include="Items\Voucher.cs" />
     <Compile Include="Items\GiftVoucher.cs" />
-    <Compile Include="Items\InvalidOfferVoucher.cs" />
     <Compile Include="Items\InvalidVoucher.cs" />
     <Compile Include="Items\OfferVoucher.cs" />
     <Compile Include="Items\Product.cs" />

@@ -2,10 +2,10 @@
 {
     public class InvalidVoucher
     {
-        public readonly GiftVoucher Voucher;
+        public readonly Voucher Voucher;
         public readonly string Reason;
 
-        public InvalidVoucher(GiftVoucher voucher, string reason)
+        public InvalidVoucher(Voucher voucher, string reason)
         {
             Voucher = voucher;
             Reason = reason;

@@ -2,19 +2,17 @@
 
 namespace BasketTest.Discounts.Items
 {
-    public class OfferVoucher
+    public sealed class OfferVoucher : Voucher
     {
-        public readonly decimal Value;
         public readonly decimal Threshold;
 
-        public OfferVoucher(decimal value, decimal threshold)
+        public OfferVoucher(decimal value, decimal threshold) : base(value)
         {
-            if (value < 0 || threshold < 0)
+            if (threshold < 0)
             {
                 throw new ArgumentException("Value cannot be negative.");
             }
-
-            Value = value;
+            
             Threshold = threshold;
         }
     }

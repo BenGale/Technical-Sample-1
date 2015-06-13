@@ -13,7 +13,6 @@ namespace BasketTest.Discounts
         public List<GiftVoucher> GiftVouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
         public OfferVoucher OfferVoucher { get; set; }
-        public List<InvalidOfferVoucher> InvalidOfferVouchers { get; set; }
 
         public Basket(IGiftVoucherValidator giftVoucherValidator)
         {
@@ -22,7 +21,6 @@ namespace BasketTest.Discounts
             Products = new List<Product>();
             GiftVouchers = new List<GiftVoucher>();
             InvalidVouchers = new List<InvalidVoucher>();
-            InvalidOfferVouchers = new List<InvalidOfferVoucher>();
         }
 
         public void AddProduct(Product product)
@@ -53,7 +51,7 @@ namespace BasketTest.Discounts
         {
             if (OfferVoucher != null)
             {
-                InvalidOfferVouchers.Add(new InvalidOfferVoucher(
+                InvalidVouchers.Add(new InvalidVoucher(
                     offerVoucher, "You can only use one offer voucher."));
                 return;
             }
@@ -73,7 +71,10 @@ namespace BasketTest.Discounts
             // Here we want to reaccess the basket as if all vouchers are valid
             // and see what the validators decide now that the variables have
             // changed.
-            GiftVouchers.AddRange(InvalidVouchers.Select(v => v.Voucher));
+            GiftVouchers.AddRange(
+                InvalidVouchers
+                .Where(v => v.Voucher is GiftVoucher)
+                .Select(v => (GiftVoucher)v.Voucher));
             InvalidVouchers.Clear();
             InvalidVouchers.AddRange(_giftVoucherValidator.Validate(Products, GiftVouchers));
             GiftVouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));

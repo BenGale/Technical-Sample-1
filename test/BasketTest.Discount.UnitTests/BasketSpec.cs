@@ -306,8 +306,8 @@ namespace BasketTest.Discount.UnitTests
             _sut.AddOfferVoucher(testOfferB);
 
             _sut.OfferVoucher.Should().Be(testOfferA);
-            _sut.InvalidOfferVouchers.Should().HaveCount(1);
-            _sut.InvalidOfferVouchers.First().Voucher.Should().Be(testOfferB);
+            _sut.InvalidVouchers.Should().HaveCount(1);
+            _sut.InvalidVouchers.First().Voucher.Should().Be(testOfferB);
         }
     }
 }
