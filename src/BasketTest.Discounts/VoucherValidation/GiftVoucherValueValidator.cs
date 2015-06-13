@@ -9,7 +9,7 @@ namespace BasketTest.Discounts.VoucherValidation
     /// does not exceed the value of the basket. We will attempt 
     /// to use most valuable vouchers first.
     /// </summary>
-    public class GiftVoucherValueValidator : IVoucherValidator
+    public class GiftVoucherValueValidator : IGiftVoucherValidator
     {
         public List<InvalidVoucher> Validate(
             List<Product> products, List<GiftVoucher> vouchers)

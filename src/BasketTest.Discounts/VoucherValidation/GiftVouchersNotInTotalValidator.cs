@@ -5,7 +5,7 @@ using BasketTest.Discounts.Items;
 
 namespace BasketTest.Discounts.VoucherValidation
 {
-    public class GiftVouchersNotInTotalValidator : IVoucherValidator
+    public class GiftVouchersNotInTotalValidator : IGiftVoucherValidator
     {
         private readonly GiftVoucherValueValidator _valueValidator;
 

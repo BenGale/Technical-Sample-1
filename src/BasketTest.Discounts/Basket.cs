@@ -8,18 +8,18 @@ namespace BasketTest.Discounts
 {
     public class Basket
     {
-        private readonly IVoucherValidator _voucherValidator;
+        private readonly IGiftVoucherValidator _giftVoucherValidator;
         public List<Product> Products { get; }
-        public List<GiftVoucher> Vouchers { get; }
+        public List<GiftVoucher> GiftVouchers { get; }
         public List<InvalidVoucher> InvalidVouchers { get; }
         public OfferVoucher OfferVoucher { get; set; }
 
-        public Basket(IVoucherValidator voucherValidator)
+        public Basket(IGiftVoucherValidator giftVoucherValidator)
         {
-            _voucherValidator = voucherValidator;
+            _giftVoucherValidator = giftVoucherValidator;
 
             Products = new List<Product>();
-            Vouchers = new List<GiftVoucher>();
+            GiftVouchers = new List<GiftVoucher>();
             InvalidVouchers = new List<InvalidVoucher>();
         }
 
@@ -34,15 +34,15 @@ namespace BasketTest.Discounts
             ValidateBasket();
         }
 
-        public void AddVoucher(GiftVoucher voucher)
+        public void AddGiftVoucher(GiftVoucher voucher)
         {
-            Vouchers.Add(voucher);
+            GiftVouchers.Add(voucher);
             ValidateBasket();
         }
 
         public void RemoveVoucher(GiftVoucher voucher)
         {
-            Vouchers.Remove(voucher);
+            GiftVouchers.Remove(voucher);
             InvalidVouchers.RemoveAll(invalidVoucher => invalidVoucher.Voucher == voucher);
             ValidateBasket();
         }
@@ -55,7 +55,7 @@ namespace BasketTest.Discounts
         public decimal Total()
         {
             var productTotal = Products.Sum(product => product.Value);
-            var voucherTotal = Vouchers.Sum(voucher => voucher.Value);
+            var voucherTotal = GiftVouchers.Sum(voucher => voucher.Value);
 
             return productTotal - voucherTotal;
         }
@@ -65,10 +65,10 @@ namespace BasketTest.Discounts
             // Here we want to reaccess the basket as if all vouchers are valid
             // and see what the validators decide now that the variables have
             // changed.
-            Vouchers.AddRange(InvalidVouchers.Select(v => v.Voucher));
+            GiftVouchers.AddRange(InvalidVouchers.Select(v => v.Voucher));
             InvalidVouchers.Clear();
-            InvalidVouchers.AddRange(_voucherValidator.Validate(Products, Vouchers));
-            Vouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
+            InvalidVouchers.AddRange(_giftVoucherValidator.Validate(Products, GiftVouchers));
+            GiftVouchers.RemoveAll(voucher => InvalidVouchers.Any(iv => iv.Voucher == voucher));
         }
     }
 }
