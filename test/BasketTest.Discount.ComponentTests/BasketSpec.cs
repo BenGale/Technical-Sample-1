@@ -5,6 +5,7 @@ using BasketTest.Discounts.Enums;
 using BasketTest.Discounts.Items;
 using BasketTest.Discounts.VoucherValidation;
 using BasketTest.Discounts.VoucherValidation.Gift;
+using BasketTest.Discounts.VoucherValidation.Offer;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -13,16 +14,22 @@ namespace BasketTest.Discount.ComponentTests
     [TestFixture]
     public class BasketSpec
     {
-        private IVoucherValidator _validator;
+        private IVoucherValidator _giftvalidator;
+        private OfferVoucherValidatorAdaptor _offerValidator;
         private Basket _basket;
 
         [SetUp]
         public void Setup()
         {
-            var valueValidator = new GiftVoucherValueValidator();
-            var vouchersNotInTotalValidator = new GiftVouchersNotInTotalValidator(valueValidator);
-            _validator = new GiftVoucherValidatorAdaptor(vouchersNotInTotalValidator);
-            _basket = new Basket(new List<IVoucherValidator> {_validator});
+            var giftVoucherValueValidator = new GiftVoucherValueValidator();
+            var giftVouchersNotInTotalValidator = new GiftVouchersNotInTotalValidator(giftVoucherValueValidator);
+            _giftvalidator = new GiftVoucherValidatorAdaptor(giftVouchersNotInTotalValidator);
+
+            var offerSingleValidator = new SingleOfferVoucherValidator();
+            var offerVoucherThresholdValidator = new OfferVoucherThresholdValidator(offerSingleValidator);
+            _offerValidator = new OfferVoucherValidatorAdaptor(offerVoucherThresholdValidator);
+
+            _basket = new Basket(new List<IVoucherValidator> {_giftvalidator, _offerValidator});
         }
 
         [Test]
@@ -136,6 +143,22 @@ namespace BasketTest.Discount.ComponentTests
 
             _basket.InvalidVouchers.Should().HaveCount(1);
             _basket.InvalidVouchers[0].Voucher.Should().Be(testVoucherA);
+        }
+
+        [Test]
+        public void Basket_CaculatesOffer()
+        {
+            var testProductA = new Product("Hat", 25m);
+            var testProductB = new Product("£30 Gift Voucher", 30m, ProductCategory.GiftVoucher);
+            var testVoucher = new OfferVoucher(5m, 50m);
+
+            _basket.AddProduct(testProductA);
+            _basket.AddProduct(testProductB);
+            _basket.AddVoucher(testVoucher);
+
+            _basket.Total().Should().Be(55m);
+            _basket.InvalidVouchers.First().Reason.Should().Be(
+                "You have not reached the spend threshold. Spend another £25.01 to receive £5.00 discount.");
         }
     }
 }
